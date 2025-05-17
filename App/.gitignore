@@ -1,0 +1,27 @@
+# Python cache and virtualenv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VSCode or PyCharm configs
+.vscode/
+.idea/
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Data
+*.csv
+*.xlsx
+*.parquet
+
+# Others
+*.log
+*.tmp

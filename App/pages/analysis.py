@@ -92,8 +92,16 @@ html.Div([
         "flexWrap": "wrap",  # responsive wrap for small screens
         "marginBottom": "40px"
     }),
-
-    dcc.Graph(figure=plot_correlation_heatmap(df)),
+    html.Div(
+        dcc.Graph(figure=plot_correlation_heatmap(df)),
+        style={
+            "display": "flex",
+            "justifyContent": "center",
+            "alignItems": "center",
+            "width": "100%",
+            "marginTop": "40px"
+        }
+    )
 ], style={
     "padding": "20px",
     "backgroundColor": "#1a1a2e",

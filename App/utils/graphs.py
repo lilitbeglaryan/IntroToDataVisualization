@@ -1,36 +1,68 @@
 # utils/graphs.py
 
 import plotly.express as px
-import seaborn as sns
-import pandas as pd
+import plotly.graph_objects as go
+
 
 def plot_default_distribution(df):
-    return px.histogram(
-        df,
-        x="default_label",
-        color="default_label",
+    counts = df["default_label"].value_counts()
+    colors = {"Default": "#8e44ad", "No Default": "#d2b4de"}
+
+    fig = go.Figure()
+
+    for label in ["Default", "No Default"]:
+        fig.add_trace(go.Bar(
+            x=[label],
+            y=[counts.get(label, 0)],
+            name=label,
+            marker_color=colors[label],
+            opacity=1.0,
+        ))
+
+    fig.update_layout(
         title="Distribution of Defaults",
-        labels={"default_label": "Default Status", "count": "Number of Records"},
-        color_discrete_map={"Default": "#8e44ad", "No Default": "#d2b4de"},
-    ).update_layout(
+        xaxis_title="Default Status",
         yaxis_title="Number of Records",
         font=dict(family="Poppins", size=14),
+        barmode="group",
+        legend_title_text="Default Status",
+        legend_itemclick="toggleothers",  # enables ghosting
+        legend_itemdoubleclick=False,
     )
+    fig.update_yaxes(fixedrange=True)
+
+    return fig
+
 
 
 def plot_age_vs_default(df):
-    return px.box(
-        df,
-        x="default_label",
-        y="age",
-        color="default_label",
+    colors = {"Default": "#9B59B6", "No Default": "#D2B4DE"}
+
+    fig = go.Figure()
+
+    for label in ["Default", "No Default"]:
+        fig.add_trace(go.Box(
+            y=df[df["default_label"] == label]["age"],
+            name=label,
+            marker_color=colors[label],
+            opacity=1.0,
+            boxpoints="outliers",
+        ))
+
+    fig.update_layout(
         title="Age Distribution by Default Status",
-        labels={"default_label": "Default", "age": "Age"},
-        color_discrete_map={"Default": "#8e44ad", "No Default": "#d2b4de"},
-    ).update_layout(
+        xaxis_title="Default Status",
         yaxis_title="Age",
+        boxmode="group",
         font=dict(family="Poppins", size=14),
+        legend_title_text="Default Status",
+        legend_itemclick="toggleothers",  # keep both, dim one
+        legend_itemdoubleclick=False,
     )
+
+    fig.update_yaxes(fixedrange=True)
+
+    return fig
 
 
 def plot_purpose_vs_default(df):
@@ -68,10 +100,15 @@ def plot_credit_amount_by_default(df, selected_purpose=None):
             marker_color=color,
             opacity=opacity
         ))
-
+        # Create a dynamic title
+    title = (
+        f"Credit Amount Distribution (Purpose: {selected_purpose})"
+        if selected_purpose
+        else "Credit Amount Distribution by Loan Purpose"
+    )
     fig.update_layout(
         barmode="overlay",
-        title="Credit Amount by Purpose",
+        title=title,
         xaxis_title="Credit Amount",
         yaxis_title="Number of Records",
         legend_title="Purpose",
@@ -102,7 +139,7 @@ def plot_credit_history_by_default(df, selected_purpose=None):
 
     # Create a dynamic title
     title = (
-        f"Credit History Distribution (Highlighted: {selected_purpose})"
+        f"Credit History Distribution (Purpose: {selected_purpose})"
         if selected_purpose
         else "Credit History Distribution by Loan Purpose"
     )
@@ -119,7 +156,8 @@ def plot_credit_history_by_default(df, selected_purpose=None):
         },
         color_discrete_map=color_map
     ).update_layout(
-        xaxis_tickangle=0,
+        xaxis_tickangle=30,
+        margin=dict(b=100),  # adds space for rotated labels
         yaxis_title="Number of Records"
     )
 
@@ -138,6 +176,9 @@ def plot_correlation_heatmap(df):
     )
 
     fig.update_layout(
+        width=800,  # Adjust as needed
+        height=500,
+        margin=dict(l=40, r=40, t=50, b=40),
         font=dict(family="Poppins", size=14),
     )
 

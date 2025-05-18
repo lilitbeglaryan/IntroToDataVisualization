@@ -4,3 +4,4 @@ pandas==2.2.2
 plotly==5.22.0
 black==24.3.0         # Code formatter (optional)
 seaborn
+

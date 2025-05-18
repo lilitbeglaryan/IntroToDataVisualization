@@ -5,8 +5,8 @@ from dash import html, page_container
 import dash_bootstrap_components as dbc
 from components.navbar import navbar
 
-# Enable multi-page support with Dash Pages
-app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.FLATLY])
+# Enable multipage support with Dash Pages
+app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.QUARTZ])
 app.title = "Credit Scoring Dashboard"
 
 # App layout

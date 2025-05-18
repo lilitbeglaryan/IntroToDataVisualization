@@ -10,9 +10,6 @@ def load_data():
     url = "https://raw.githubusercontent.com/Metricam/Public_data/master/FINANCE_Credit_Scoring.csv"
     df = pd.read_csv(url)
 
-    # # Optional: convert column names to lowercase and strip whitespace
-    # df.columns = df.columns.str.lower().str.strip()
-
     # Make sure 'default' column is treated as categorical (0 = no, 1 = yes)
     df['default'] = df['default'].astype(int)
 
@@ -21,5 +18,7 @@ def load_data():
 
     # Optional: map target to readable labels (for graphs)
     df['default_label'] = df['default'].map({0: "No Default", 1: "Default"})
+
+    df['purpose'] = df['purpose'].replace('(vacation - does not exist?)', 'vacation')
 
     return df

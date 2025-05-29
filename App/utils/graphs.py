@@ -131,6 +131,9 @@ def plot_credit_history_by_default(df, selected_purpose=None):
     else:
         df["highlight"] = df["purpose"]
 
+    # Define a fixed order for credit history categories
+    credit_history_order = sorted(df["credit_history"].unique())
+
     # Purple palette for selected vs other
     color_map = {
         selected_purpose: "#8E44AD",
@@ -154,10 +157,11 @@ def plot_credit_history_by_default(df, selected_purpose=None):
             "credit_history": "Credit History",
             "highlight": "Loan Purpose",
         },
-        color_discrete_map=color_map
+        color_discrete_map=color_map,
+        category_orders={"credit_history": credit_history_order}
     ).update_layout(
         xaxis_tickangle=30,
-        margin=dict(b=100),  # adds space for rotated labels
+        margin=dict(b=100),
         yaxis_title="Number of Records"
     )
 
